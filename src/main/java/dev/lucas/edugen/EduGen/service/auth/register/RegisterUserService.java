@@ -1,7 +1,7 @@
 package dev.lucas.edugen.EduGen.service;
 
 import dev.lucas.edugen.EduGen.domain.User;
-import dev.lucas.edugen.EduGen.dtos.request.RegisterUserRequest;
+import dev.lucas.edugen.EduGen.dtos.request.auth.RegisterUserRequest;
 import dev.lucas.edugen.EduGen.dtos.response.user.UserResponse;
 import dev.lucas.edugen.EduGen.mapper.UserMapper;
 import dev.lucas.edugen.EduGen.repository.UserRepository;
