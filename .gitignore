@@ -31,3 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Keys ###
+private.pem
+public.pem
+
+##Variables
+.env
