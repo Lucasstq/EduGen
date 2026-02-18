@@ -57,6 +57,7 @@ public class Worksheet {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Builder.Default
     @OneToMany(mappedBy = "worksheet", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("id ASC")
     private List<WorksheetVersion> versions = new ArrayList<>();

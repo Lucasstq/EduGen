@@ -52,10 +52,12 @@ public class WorksheetVersion {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Builder.Default
     @OneToMany(mappedBy = "version", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("orderNumber ASC")
     private List<Question> questions = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "version", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("createdAt DESC")
     private List<WorksheetFile> files = new ArrayList<>();
