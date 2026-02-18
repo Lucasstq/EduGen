@@ -29,7 +29,7 @@ public class JwtTokenService {
                 .issuedAt(now)
                 .subject(user.getUsername())
                 .expiresAt(now.plusSeconds(accessTokenExpiration))
-                .claim("userId", user.getId())
+                .claim("userId", user.getId().toString())
                 .build();
 
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
