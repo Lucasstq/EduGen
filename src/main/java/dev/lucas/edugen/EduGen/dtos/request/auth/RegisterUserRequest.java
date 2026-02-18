@@ -1,4 +1,4 @@
-package dev.lucas.edugen.EduGen.dtos.request;
+package dev.lucas.edugen.EduGen.dtos.request.auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
