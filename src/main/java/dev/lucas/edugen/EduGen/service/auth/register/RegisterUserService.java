@@ -1,4 +1,4 @@
-package dev.lucas.edugen.EduGen.service;
+package dev.lucas.edugen.EduGen.service.auth.register;
 
 import dev.lucas.edugen.EduGen.domain.User;
 import dev.lucas.edugen.EduGen.dtos.request.auth.RegisterUserRequest;

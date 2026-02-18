@@ -2,7 +2,7 @@ package dev.lucas.edugen.EduGen.service.auth.login;
 
 import dev.lucas.edugen.EduGen.domain.RefreshToken;
 import dev.lucas.edugen.EduGen.domain.User;
-import dev.lucas.edugen.EduGen.dtos.request.LoginUserRequest;
+import dev.lucas.edugen.EduGen.dtos.request.auth.LoginUserRequest;
 import dev.lucas.edugen.EduGen.dtos.response.LoginResponse;
 import dev.lucas.edugen.EduGen.repository.UserRepository;
 import dev.lucas.edugen.EduGen.service.auth.jwt.JwtTokenService;
