@@ -1,3 +1,38 @@
 spring:
-  application:
-    name: EduGen
+  ai:
+    google:
+      genai:
+        api-key: ${GEMINI_API_KEY}
+        chat:
+          options:
+            model: gemini-1.5-flash
+            temperature: 0.7
+            max-output-tokens: 1000
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+
+
+jwt:
+  public:
+    key: classpath:public.pem
+  private:
+    key: classpath:private.pem
+  access-token:
+    expiration: 900
+  refresh-token:
+    expiration: 604800
+
