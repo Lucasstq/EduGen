@@ -165,7 +165,6 @@ public class WorksheetService {
     public void deleteWorksheet(Long worksheetId, UUID userId) {
         Worksheet w = worksheetRepository.findByIdAndOwnerId(worksheetId, userId)
                 .orElseThrow(() -> new RuntimeException("Atividade não encontrada"));
-        // PDFs órfãos: idealmente um job de cleanup, no MVP deletar os arquivos aqui
         worksheetRepository.delete(w);
     }
 
