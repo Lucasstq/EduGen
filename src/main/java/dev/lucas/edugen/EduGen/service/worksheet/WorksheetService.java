@@ -1,8 +1,12 @@
 package dev.lucas.edugen.EduGen.service.worksheet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.lucas.edugen.EduGen.domain.User;
 import dev.lucas.edugen.EduGen.domain.Worksheet;
+import dev.lucas.edugen.EduGen.domain.WorksheetFile;
 import dev.lucas.edugen.EduGen.domain.WorksheetVersion;
+import dev.lucas.edugen.EduGen.domain.enums.Audience;
+import dev.lucas.edugen.EduGen.domain.enums.Subject;
 import dev.lucas.edugen.EduGen.domain.enums.VersionStatus;
 import dev.lucas.edugen.EduGen.dtos.request.worksheet.CreateWorksheetRequest;
 import dev.lucas.edugen.EduGen.dtos.request.worksheet.GenerateVersionRequest;
@@ -13,8 +17,12 @@ import dev.lucas.edugen.EduGen.mapper.WorksheetSpecEntityMapper;
 import dev.lucas.edugen.EduGen.repository.UserRepository;
 import dev.lucas.edugen.EduGen.repository.WorksheetRepository;
 import dev.lucas.edugen.EduGen.repository.WorksheetVersionRepository;
+import dev.lucas.edugen.EduGen.service.pdf.PdfService;
+import dev.lucas.edugen.EduGen.service.storage.StorageService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -31,6 +39,8 @@ public class WorksheetService {
 
     private final AiWorksheetService aiWorksheetService;
     private final ObjectMapper objectMapper;
+    private final StorageService storageService;
+    private final PdfService pdfService;
 
     public WorksheetVersionResponse generateWorksheetVersion(Long worksheetId, GenerateVersionRequest req,
                                                              UUID userId) {
@@ -60,6 +70,10 @@ public class WorksheetService {
 
             v = worksheetVersionRepository.save(v);
 
+            pdfService.renderAndStore(v);
+
+            v = worksheetVersionRepository.save(v);
+
             return WorksheetVersionResponse.builder()
                     .id(v.getId())
                     .worksheetId(worksheet.getId())
@@ -85,6 +99,8 @@ public class WorksheetService {
                 .topic(req.topic().trim())
                 .difficulty(req.difficulty())
                 .questionCount(req.questionCount())
+                .questionType(req.questionType())
+                .description(req.description())
                 .build();
 
         w = worksheetRepository.save(w);
@@ -96,6 +112,9 @@ public class WorksheetService {
                 .topic(w.getTopic())
                 .difficulty(w.getDifficulty())
                 .questionCount(w.getQuestionCount())
+                .questionType(w.getQuestionType())
+                .description(w.getDescription() == null ? "" : w.getDescription())
+                .createdAt(w.getCreatedAt())
                 .build();
     }
 
@@ -110,6 +129,44 @@ public class WorksheetService {
         }
 
         return spec;
+    }
+
+    public byte[] downloadPdf(Long versionId, Audience audience, UUID userId) {
+        WorksheetVersion version = worksheetVersionRepository
+                .findByIdAndWorksheetOwnerId(versionId, userId)
+                .orElseThrow(() -> new RuntimeException("Versão não encontrada"));
+
+        WorksheetFile file = version.getFiles().stream()
+                .filter(f -> f.getAudience() == audience)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("PDF não gerado para este público"));
+
+        return storageService.load(file.getStorageKey());
+    }
+
+    public Page<WorksheetResponse> listWorksheets(UUID userId, String subjectStr, Pageable pageable) {
+        User owner = userRepository.findById(userId).orElseThrow();
+
+        Page<Worksheet> page = (subjectStr != null)
+                ? worksheetRepository.findByOwnerAndSubject(owner, Subject.valueOf(subjectStr), pageable)
+                : worksheetRepository.findByOwner(owner, pageable);
+
+        return page.map(w -> WorksheetResponse.builder()
+                .id(w.getId())
+                .subject(w.getSubject())
+                .grade(w.getGrade())
+                .topic(w.getTopic())
+                .difficulty(w.getDifficulty())
+                .questionCount(w.getQuestionCount())
+                .createdAt(w.getCreatedAt())
+                .build());
+    }
+
+    public void deleteWorksheet(Long worksheetId, UUID userId) {
+        Worksheet w = worksheetRepository.findByIdAndOwnerId(worksheetId, userId)
+                .orElseThrow(() -> new RuntimeException("Atividade não encontrada"));
+        // PDFs órfãos: idealmente um job de cleanup, no MVP deletar os arquivos aqui
+        worksheetRepository.delete(w);
     }
 
 }
