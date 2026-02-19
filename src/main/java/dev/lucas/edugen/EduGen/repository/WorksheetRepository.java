@@ -2,10 +2,12 @@ package dev.lucas.edugen.EduGen.repository;
 
 import dev.lucas.edugen.EduGen.domain.User;
 import dev.lucas.edugen.EduGen.domain.Worksheet;
+import dev.lucas.edugen.EduGen.domain.enums.Subject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -14,11 +16,22 @@ import java.util.UUID;
 @Repository
 public interface WorksheetRepository extends JpaRepository<Worksheet, Long> {
 
-    @Query("SELECT COUNT(w) FROM Worksheet w WHERE w.owner = :owner")
+    @Query("""
+                SELECT COUNT(q) FROM Question q
+                WHERE q.version.worksheet.owner.id = :ownerId
+            """)
+    long countQuestionsByOwner(@Param("ownerId") UUID ownerId);
+
+    @Query("""
+                SELECT COUNT(w) FROM Worksheet w
+                WHERE w.owner = :owner
+            """)
     long countWorksheetByOwner(User owner);
 
+    Page<Worksheet> findByOwnerAndSubject(User owner, Subject subject, Pageable pageable);
+
     /*
-        * Método para buscar as worksheets de um usuário específico, com paginação.
+     * Método para buscar as worksheets de um usuário específico, com paginação.
      */
     Page<Worksheet> findByOwner(User owner, Pageable pageable);
 
