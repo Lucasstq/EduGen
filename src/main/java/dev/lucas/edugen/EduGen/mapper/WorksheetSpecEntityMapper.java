@@ -20,6 +20,7 @@ public class WorksheetSpecEntityMapper {
         }
 
         version.getQuestions().clear();
+        version.setAiDescription(spec.description());
 
         for (QuestionSpec qs : spec.questions()) {
             if (qs.orderNumber() == null) {
