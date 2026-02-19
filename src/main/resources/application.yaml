@@ -7,7 +7,7 @@ spring:
           options:
             model: gemini-2.5-flash
             temperature: 0.2
-            max-output-tokens: 1500
+            max-output-tokens: 4000
             response-mime-type: application/json
 
   datasource:
@@ -26,6 +26,8 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
 
+storage:
+  base-path: ./pdfs
 
 jwt:
   public:
