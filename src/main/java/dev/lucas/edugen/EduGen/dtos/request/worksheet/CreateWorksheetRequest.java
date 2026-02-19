@@ -2,6 +2,7 @@ package dev.lucas.edugen.EduGen.dtos.request.worksheet;
 
 import dev.lucas.edugen.EduGen.domain.enums.Difficulty;
 import dev.lucas.edugen.EduGen.domain.enums.Grade;
+import dev.lucas.edugen.EduGen.domain.enums.QuestionType;
 import dev.lucas.edugen.EduGen.domain.enums.Subject;
 import lombok.Builder;
 
@@ -11,6 +12,8 @@ public record CreateWorksheetRequest(
         Grade grade,
         String topic,
         Difficulty difficulty,
-        int questionCount
+        int questionCount,
+        String description,
+        QuestionType questionType
 ) {
 }

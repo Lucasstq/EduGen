@@ -7,5 +7,4 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Builder
-public record WorksheetSpec(List<QuestionSpec> questions) {}
-
+public record WorksheetSpec(String description, List<QuestionSpec> questions) {}
