@@ -2,6 +2,7 @@ package dev.lucas.edugen.EduGen.domain;
 
 import dev.lucas.edugen.EduGen.domain.enums.Difficulty;
 import dev.lucas.edugen.EduGen.domain.enums.Grade;
+import dev.lucas.edugen.EduGen.domain.enums.QuestionType;
 import dev.lucas.edugen.EduGen.domain.enums.Subject;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,6 +36,9 @@ public class Worksheet {
     @Column(nullable = false)
     private Subject subject;
 
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Grade grade;
@@ -48,6 +52,10 @@ public class Worksheet {
 
     @Column(name = "question_count", nullable = false)
     private int questionCount;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "question_type")
+    private QuestionType questionType;
 
     @CreationTimestamp
     @Column(name = "created_at")

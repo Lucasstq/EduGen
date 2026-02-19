@@ -48,6 +48,9 @@ public class WorksheetVersion {
     @JdbcTypeCode(SqlTypes.JSON)
     private String specJson;
 
+    @Column(name = "ai_description", columnDefinition = "TEXT")
+    private String aiDescription;
+
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;

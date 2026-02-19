@@ -32,7 +32,7 @@ public class Question {
     @Column(columnDefinition = "TEXT")
     private String statement;
 
-    @Column(name = "correct_answer")
+    @Column(name = "correct_answer", columnDefinition = "TEXT")
     private String correctAnswer;
 
     @Column(columnDefinition = "TEXT")
