@@ -63,6 +63,7 @@ public class AiWorksheetService {
                 - Se o campo description tiver um texto relevante, use-o para criar as questões. Se for vazio ou não tiver informações úteis, ignore-o e envie ""; caso especial: se pedir um texto antes das questões, gere um parágrafo introdutório usando o topic como base. 
                 - So use isso se o campo description não for vazio. Se o tipo de questão for OPEN, TRUE_FALSE ou FILL_BLANK, use o description para criar um enunciado mais rico e contextualizado de forma que de para responder as questões com base nele. 
                 - So use isso se o campo description não for vazio. Se o tipo for MCQ, use o description para criar um cenário ou contexto para a questão, mas mantenha o enunciado da questão claro e objetivo.
+                - So use isso se o campo description não for vazio. Se a description tiver apenas pedidos, intruções utilize para fazer as questões, mas não inclua essas instruções no enunciado. Exemplo: "Faça questões que realmente exijam um bom raciocinio para os alunos" ou que se pareçam com isso, não inclua no enunciado.
                 """.formatted(
                 worksheet.getQuestionCount(),
                 worksheet.getSubject().name(),

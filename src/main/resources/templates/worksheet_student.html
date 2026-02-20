@@ -12,143 +12,175 @@
 
         body {
             font-family: Arial, sans-serif;
-            font-size: 12pt;
+            font-size: 10pt;
             color: #1a1a1a;
-            padding: 36px 44px;
+            padding: 20px 24px;
         }
 
         /* ── CABEÇALHO ── */
         .header-box {
-            border: 1.5px dashed #555;
-            border-radius: 4px;
-            padding: 10px 14px;
-            margin-bottom: 18px;
+            border: 1.5px solid #333;
+            border-radius: 0;
+            padding: 6px 10px;
+            margin-bottom: 10px;
             display: table;
             table-layout: fixed;
             width: 100%;
         }
 
         .header-logo-col {
-            width: 100px;
+            width: 70px;
             display: table-cell;
-            vertical-align: top;
+            vertical-align: middle;
             text-align: center;
-            padding-right: 10px;
+            padding-right: 8px;
         }
 
         .header-logo-col img {
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
         }
 
         .header-fields-col {
             display: table-cell;
             vertical-align: top;
-            padding-left: 10px;
+            padding-left: 8px;
         }
 
         .header-school {
-            font-size: 10pt;
+            font-size: 9pt;
             font-weight: bold;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
+            text-align: center;
         }
 
-        .header-row {
-            display: flex;
-            align-items: center;
-            font-size: 10pt;
-            margin-bottom: 6px;
+        .header-fields-grid {
+            display: table;
+            width: 100%;
+            font-size: 9pt;
         }
 
-        .header-label {
+        .header-fields-row {
+            display: table-row;
+        }
+
+        .header-field-cell {
+            display: table-cell;
+            padding: 2px 4px;
+            border: 1px solid #333;
+        }
+
+        .header-field-cell.label {
             font-weight: bold;
+            width: 80px;
+            background-color: #f5f5f5;
+        }
+
+        .header-field-cell.value {
             min-width: 120px;
-        }
-
-        .field-underline {
-            display: inline-block;
-            border-bottom: 1px solid #333;
-            min-width: 220px;
-            margin-left: 6px;
-        }
-
-        .field-underline-full {
-            min-width: 320px;
-        }
-
-        .field-underline-short {
-            display: inline-block;
-            border-bottom: 1px solid #333;
-            min-width: 120px;
-            margin-left: 6px;
         }
 
         /* ── TÍTULO ── */
         .activity-title {
-            font-size: 15pt;
+            font-size: 12pt;
             font-weight: bold;
+            text-align: center;
             margin-bottom: 4px;
-            margin-top: 4px;
+            margin-top: 6px;
+            text-transform: uppercase;
+            border: 1px solid #333;
+            padding: 4px;
+            background-color: #f0f0f0;
         }
 
         .activity-meta {
-            font-size: 9pt;
+            font-size: 8pt;
             color: #555;
-            margin-bottom: 18px;
+            margin-bottom: 10px;
         }
 
         .worksheet-description {
-            font-size: 10pt;
+            font-size: 9pt;
             color: #333;
-            margin-top: 8px;
-            margin-bottom: 14px;
-            line-height: 1.4;
+            margin-top: 6px;
+            margin-bottom: 10px;
+            line-height: 1.3;
+            text-align: justify;
+        }
+
+        /* ── LAYOUT DUAS COLUNAS ── */
+        .questions-container {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        .questions-column {
+            display: table-cell;
+            vertical-align: top;
+            width: 50%;
+            padding: 0 8px;
+        }
+
+        .questions-column.left {
+            padding-left: 0;
+            padding-right: 10px;
+            border-right: 1px solid #333;
+        }
+
+        .questions-column.right {
+            padding-left: 10px;
+            padding-right: 0;
         }
 
         /* ── QUESTÃO ── */
         .question {
-            margin-bottom: 22px;
+            margin-bottom: 14px;
             page-break-inside: avoid;
         }
 
         .question-statement {
             font-weight: bold;
-            line-height: 1.5;
-            margin-bottom: 8px;
+            line-height: 1.4;
+            margin-bottom: 5px;
+            font-size: 10pt;
         }
 
         .options {
-            margin-left: 20px;
+            margin-left: 12px;
         }
 
         .option {
-            line-height: 1.9;
+            line-height: 1.6;
+            font-size: 9pt;
         }
 
         .true-false {
-            margin-left: 20px;
-            line-height: 1.8;
+            margin-left: 12px;
+            line-height: 1.5;
+            font-size: 9pt;
         }
 
         .answer-lines {
-            margin-top: 6px;
+            margin-top: 4px;
         }
 
         .answer-line {
             border-bottom: 1px solid #aaa;
-            height: 22px;
-            margin-bottom: 6px;
+            height: 18px;
+            margin-bottom: 4px;
         }
 
         /* ── RODAPÉ ── */
         .footer {
-            margin-top: 40px;
+            margin-top: 20px;
             border-top: 1px solid #ccc;
-            padding-top: 8px;
-            font-size: 9pt;
+            padding-top: 6px;
+            font-size: 8pt;
             color: #888;
             display: table;
             width: 100%;
+            clear: both;
         }
 
         .footer-left  { display: table-cell; text-align: left; }
@@ -164,22 +196,21 @@
     </div>
     <div class="header-fields-col">
         <div class="header-school">EEFTI PADRE PAULO DE ALMEIDA MEDEIROS</div>
-
-        <div class="header-row">
-            <span class="header-label">Nome:</span>
-            <span class="field-underline field-underline-full">&#160;</span>
-        </div>
-        <div class="header-row">
-            <span class="header-label">Professor(a):</span>
-            <span class="field-underline" th:text="${worksheet.teacherName ?: '&#160;'}"></span>
-        </div>
-        <div class="header-row">
-            <span class="header-label">Turma:</span>
-            <span class="field-underline"></span>
-        </div>
-        <div class="header-row">
-            <span class="header-label">Data:</span>
-            <span class="field-underline-short" th:text="${#temporals.format(version.createdAt, 'dd/MM/yyyy')}"></span>
+        <div class="header-fields-grid">
+            <div class="header-fields-row">
+                <div class="header-field-cell label">ESTUDANTE:</div>
+                <div class="header-field-cell value" style="width: 100%;">&#160;</div>
+            </div>
+            <div class="header-fields-row">
+                <div class="header-field-cell label">PROFESSOR(A):</div>
+                <div class="header-field-cell value" th:text="${worksheet.teacherName ?: '&#160;'}"></div>
+                <div class="header-field-cell label">DATA:</div>
+                <div class="header-field-cell value">____/____/______</div>
+            </div>
+            <div class="header-fields-row">
+                <div class="header-field-cell label">TURMA:</div>
+                <div class="header-field-cell value" style="width: 100%;">&#160;</div>
+            </div>
         </div>
     </div>
 </div>
@@ -193,46 +224,85 @@
      th:text="${aiDescription != null ? aiDescription : worksheet.description}">
 </div>
 
-<!-- QUESTÕES -->
-<div th:each="q, stat : ${questions}" class="question">
+<!-- QUESTÕES EM DUAS COLUNAS -->
+<div class="questions-container">
+    <!-- COLUNA ESQUERDA -->
+    <div class="questions-column left">
+        <div th:each="q, stat : ${questions}" th:if="${stat.index < (questions.size() + 1) / 2}" class="question">
+            <div class="question-statement"
+                 th:text="${stat.index + 1} + '. ' + ${q.statement}">
+            </div>
 
-    <div class="question-statement"
-         th:text="${stat.index + 1} + '. ' + ${q.statement}">
-    </div>
+            <!-- MCQ -->
+            <div th:if="${q.type.name() == 'MCQ'}" class="options">
+                <div th:each="opt : ${q.options}" class="option">
+                    <span th:text="${opt.label.name()} + ') ' + ${opt.text}"></span>
+                </div>
+            </div>
 
-    <!-- MCQ -->
-    <div th:if="${q.type.name() == 'MCQ'}" class="options">
-        <div th:each="opt : ${q.options}" class="option">
-            <span th:text="${opt.label.name()} + ') ' + ${opt.text}"></span>
+            <!-- TRUE_FALSE -->
+            <div th:if="${q.type.name() == 'TRUE_FALSE'}" class="true-false">
+                ( ) Verdadeiro &#160;&#160; ( ) Falso
+            </div>
+
+            <!-- OPEN / FILL_BLANK -->
+            <div th:if="${q.type.name() == 'OPEN' or q.type.name() == 'FILL_BLANK'}"
+                 class="answer-lines">
+                <div class="answer-line"></div>
+                <div class="answer-line"></div>
+            </div>
+
+            <!-- GABARITO opcional -->
+            <div th:if="${showAnswers}" style="color: #1a5276; font-style: italic; margin-top: 6px; font-size: 8pt;">
+                &#10004; <strong>Gabarito:</strong> <span th:text="${q.correctAnswer}"></span>
+                <span th:if="${showExplanations}">
+                    &#8212; <span th:text="${q.explanation}"></span>
+                </span>
+            </div>
         </div>
     </div>
 
-    <!-- TRUE_FALSE -->
-    <div th:if="${q.type.name() == 'TRUE_FALSE'}" class="true-false">
-        ( ) Verdadeiro &#160;&#160; ( ) Falso
-    </div>
+    <!-- COLUNA DIREITA -->
+    <div class="questions-column right">
+        <div th:each="q, stat : ${questions}" th:if="${stat.index >= (questions.size() + 1) / 2}" class="question">
+            <div class="question-statement"
+                 th:text="${stat.index + 1} + '. ' + ${q.statement}">
+            </div>
 
-    <!-- OPEN / FILL_BLANK -->
-    <div th:if="${q.type.name() == 'OPEN' or q.type.name() == 'FILL_BLANK'}"
-         class="answer-lines">
-        <div class="answer-line"></div>
-        <div class="answer-line"></div>
-        <div class="answer-line"></div>
-    </div>
+            <!-- MCQ -->
+            <div th:if="${q.type.name() == 'MCQ'}" class="options">
+                <div th:each="opt : ${q.options}" class="option">
+                    <span th:text="${opt.label.name()} + ') ' + ${opt.text}"></span>
+                </div>
+            </div>
 
-    <!-- GABARITO opcional -->
-    <div th:if="${showAnswers}" style="color: #1a5276; font-style: italic; margin-top: 6px;">
-        &#10004; <strong>Gabarito:</strong> <span th:text="${q.correctAnswer}"></span>
-        <span th:if="${showExplanations}">
-                &#8212; <span th:text="${q.explanation}"></span>
-            </span>
+            <!-- TRUE_FALSE -->
+            <div th:if="${q.type.name() == 'TRUE_FALSE'}" class="true-false">
+                ( ) Verdadeiro &#160;&#160; ( ) Falso
+            </div>
+
+            <!-- OPEN / FILL_BLANK -->
+            <div th:if="${q.type.name() == 'OPEN' or q.type.name() == 'FILL_BLANK'}"
+                 class="answer-lines">
+                <div class="answer-line"></div>
+                <div class="answer-line"></div>
+            </div>
+
+            <!-- GABARITO opcional -->
+            <div th:if="${showAnswers}" style="color: #1a5276; font-style: italic; margin-top: 6px; font-size: 8pt;">
+                &#10004; <strong>Gabarito:</strong> <span th:text="${q.correctAnswer}"></span>
+                <span th:if="${showExplanations}">
+                    &#8212; <span th:text="${q.explanation}"></span>
+                </span>
+            </div>
+        </div>
     </div>
 
 </div>
 
 <!-- RODAPÉ -->
 <div class="footer">
-    <span class="footer-left">EduGen &#8212; Gerador de Atividades</span>
+    <span class="footer-left">EduGen &#8212; Gerador de Atividades®, created by Lucas Torquato</span>
     <span class="footer-right" th:text="'Vers&#227;o #' + ${version.id}"></span>
 </div>
 
