@@ -4,5 +4,6 @@ public enum QuestionType {
     MCQ,
     OPEN,
     TRUE_FALSE,
-    FILL_BLANK
+    FILL_BLANK,
+    VARIABLE
 }

@@ -55,6 +55,7 @@ public class AiWorksheetService {
                 - Se type=MCQ: options deve ter 4 itens (A,B,C,D) e correctAnswer deve ser "A"|"B"|"C"|"D" (quando includeAnswers=true).
                 - Se type=TRUE_FALSE: correctAnswer deve ser "TRUE" ou "FALSE" (quando includeAnswers=true).
                 - Se type=FILL_BLANK: correctAnswer é o texto esperado (quando includeAnswers=true).
+                - Se type=VARIABLE: as questões devem ser geradas com varios tipos de perguntas (MCQ, OPEN, TRUE_FALSE, FILL_BLANK) e o campo correctAnswer deve seguir as regras do tipo específico da questão (quando includeAnswers=true).
                 - Se includeAnswers=false, NÃO inclua o campo correctAnswer.
                 - Se includeExplanations=false, NÃO inclua o campo explanation.
                 - Não invente campos além dos listados.
