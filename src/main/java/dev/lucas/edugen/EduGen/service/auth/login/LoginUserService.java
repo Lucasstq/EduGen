@@ -65,5 +65,12 @@ public class LoginUserService {
                 .build();
     }
 
+    // Logout
+    public void logout(String refreshToken){
+        RefreshToken token = refreshTokenService.validateRefreshToken(refreshToken);
+
+        refreshTokenService.revokeRefreshToken(token.getToken());
+    }
+
 
 }

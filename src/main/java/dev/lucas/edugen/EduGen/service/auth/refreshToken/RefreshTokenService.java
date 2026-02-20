@@ -53,6 +53,16 @@ public class RefreshTokenService {
         return refreshToken;
     }
 
+    //logout e limpeza de tokens expirados
+    public void revokeRefreshToken(String tokenValue){
+        RefreshToken token = refreshTokenRepository.findByToken(tokenValue)
+                .orElseThrow(() -> new RuntimeException("Refresh token não é valido, ou não existe"));
+
+        token.setRevoked(true);
+        cleanupExpiredTokens();
+        refreshTokenRepository.save(token);
+    }
+
     public void cleanupExpiredTokens(){
         refreshTokenRepository.deleteExpiredTokens();
     }
