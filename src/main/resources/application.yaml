@@ -29,6 +29,11 @@ spring:
 storage:
   base-path: ./pdfs
 
+cors:
+  allowed-origins:
+    - http://localhost:3000
+    - http://localhost:8080
+
 jwt:
   public:
     key: classpath:public.pem
