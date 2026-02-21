@@ -3,6 +3,9 @@ package dev.lucas.edugen.EduGen.service.auth.register;
 import dev.lucas.edugen.EduGen.domain.User;
 import dev.lucas.edugen.EduGen.dtos.request.auth.RegisterUserRequest;
 import dev.lucas.edugen.EduGen.dtos.response.user.UserResponse;
+import dev.lucas.edugen.EduGen.eduGenException.businessExeception.EmailAlreadyExistsException;
+import dev.lucas.edugen.EduGen.eduGenException.businessExeception.PasswordMismatchException;
+import dev.lucas.edugen.EduGen.eduGenException.businessExeception.UsernameAlreadyExistsException;
 import dev.lucas.edugen.EduGen.mapper.UserMapper;
 import dev.lucas.edugen.EduGen.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,15 +38,15 @@ public class RegisterUserService {
 
     private void validateCredentials(RegisterUserRequest request) {
         if (userRepository.existsByEmail(request.email())) {
-            throw new IllegalArgumentException("Email já cadastrado");
+            throw new EmailAlreadyExistsException();
         }
 
         if (userRepository.existsByUsername(request.username())) {
-            throw new IllegalArgumentException("O nome de usuário já existe");
+            throw new UsernameAlreadyExistsException();
         }
 
         if (!request.password().equals(request.confirmPassword())) {
-            throw new IllegalArgumentException("As senhas não coincidem");
+            throw new PasswordMismatchException();
         }
     }
 

@@ -1,4 +1,4 @@
-package dev.lucas.edugen.EduGen.config.security.ai;
+package dev.lucas.edugen.EduGen.config.ai;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;

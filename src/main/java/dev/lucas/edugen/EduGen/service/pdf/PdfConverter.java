@@ -1,8 +1,11 @@
 package dev.lucas.edugen.EduGen.service.pdf;
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
+import dev.lucas.edugen.EduGen.eduGenException.infrastructureException.PdfGenerationException;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
 
 @Component
 public class PdfConverter {
@@ -14,8 +17,8 @@ public class PdfConverter {
             builder.toStream(baos);
             builder.run();
             return baos.toByteArray();
-        } catch (Exception e) {
-            throw new RuntimeException("Falha ao converter HTML para PDF", e);
+        } catch (IOException e) {
+            throw new PdfGenerationException();
         }
     }
 }

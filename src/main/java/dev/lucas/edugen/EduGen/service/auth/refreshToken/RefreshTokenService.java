@@ -2,6 +2,7 @@ package dev.lucas.edugen.EduGen.service.auth.refreshToken;
 
 import dev.lucas.edugen.EduGen.domain.RefreshToken;
 import dev.lucas.edugen.EduGen.domain.User;
+import dev.lucas.edugen.EduGen.eduGenException.businessExeception.InvalidRefreshTokenException;
 import dev.lucas.edugen.EduGen.repository.RefreshTokenRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -44,10 +45,10 @@ public class RefreshTokenService {
 
     public RefreshToken validateRefreshToken(String token) {
         RefreshToken refreshToken = refreshTokenRepository.findByToken(token)
-                .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
+                .orElseThrow(() -> new InvalidRefreshTokenException("Invalid refresh token"));
 
         if (refreshToken.isExpired() || refreshToken.isRevoked()) {
-            throw new RuntimeException("Refresh token is expired or revoked");
+            throw new InvalidRefreshTokenException("Refresh token is expired or revoked");
         }
 
         return refreshToken;
@@ -56,7 +57,7 @@ public class RefreshTokenService {
     //logout e limpeza de tokens expirados
     public void revokeRefreshToken(String tokenValue){
         RefreshToken token = refreshTokenRepository.findByToken(tokenValue)
-                .orElseThrow(() -> new RuntimeException("Refresh token não é valido, ou não existe"));
+                .orElseThrow(() -> new InvalidRefreshTokenException("Refresh token não é valido, ou não existe"));
 
         token.setRevoked(true);
         cleanupExpiredTokens();

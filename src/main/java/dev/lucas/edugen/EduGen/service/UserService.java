@@ -9,6 +9,7 @@ import dev.lucas.edugen.EduGen.dtos.response.user.UserActivityHistoryResponse;
 import dev.lucas.edugen.EduGen.dtos.response.user.UserActivityResponse;
 import dev.lucas.edugen.EduGen.dtos.response.user.UserDashBoardResponse;
 import dev.lucas.edugen.EduGen.dtos.response.user.UserResponse;
+import dev.lucas.edugen.EduGen.eduGenException.resourceNotFoundException.UserNotFoundException;
 import dev.lucas.edugen.EduGen.mapper.UserMapper;
 import dev.lucas.edugen.EduGen.repository.UserRepository;
 import dev.lucas.edugen.EduGen.repository.WorksheetRepository;
@@ -94,7 +95,7 @@ public class UserService {
 
     private User requireUser(UUID userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+                .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado."));
     }
 
     private UserActivityResponse toActivityResponse(WorksheetVersion version) {

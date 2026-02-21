@@ -13,6 +13,9 @@ import dev.lucas.edugen.EduGen.dtos.request.worksheet.GenerateVersionRequest;
 import dev.lucas.edugen.EduGen.dtos.request.worksheet.WorksheetSpec;
 import dev.lucas.edugen.EduGen.dtos.response.worksheet.WorksheetResponse;
 import dev.lucas.edugen.EduGen.dtos.response.worksheet.WorksheetVersionResponse;
+import dev.lucas.edugen.EduGen.eduGenException.infrastructureException.PdfGenerationException;
+import dev.lucas.edugen.EduGen.eduGenException.resourceNotFoundException.WorksheetNotFoundException;
+import dev.lucas.edugen.EduGen.eduGenException.resourceNotFoundException.WorksheetVersionNotFoundException;
 import dev.lucas.edugen.EduGen.mapper.WorksheetSpecEntityMapper;
 import dev.lucas.edugen.EduGen.repository.UserRepository;
 import dev.lucas.edugen.EduGen.repository.WorksheetRepository;
@@ -45,7 +48,7 @@ public class WorksheetService {
     public WorksheetVersionResponse generateWorksheetVersion(Long worksheetId, GenerateVersionRequest req,
                                                              UUID userId) {
         Worksheet worksheet = worksheetRepository.findByIdAndOwnerId(worksheetId, userId)
-                .orElseThrow(() -> new RuntimeException("Worksheet não encontrada."));
+                .orElseThrow(() -> new WorksheetNotFoundException("Atividade não encontrada."));
 
         WorksheetVersion v = WorksheetVersion.builder()
                 .worksheet(worksheet)
@@ -86,7 +89,7 @@ public class WorksheetService {
         } catch (Exception e) {
             v.setStatus(VersionStatus.FAILED);
             worksheetVersionRepository.save(v);
-            throw new IllegalStateException("Falha ao gerar atividade", e);
+            throw new PdfGenerationException();
         }
     }
 
@@ -121,11 +124,11 @@ public class WorksheetService {
     public String getSpecJson(Long versionId, UUID userId) {
         WorksheetVersion v = worksheetVersionRepository
                 .findByIdAndWorksheetOwnerId(versionId, userId)
-                .orElseThrow(() -> new RuntimeException("Versão não encontrada"));
+                .orElseThrow(() -> new WorksheetVersionNotFoundException("Versão não encontrada"));
 
         String spec = v.getSpecJson();
         if (spec == null || spec.isBlank()) {
-            throw new RuntimeException("Spec ainda não foi gerado");
+            throw new WorksheetNotFoundException("Especificação ainda não foi gerado");
         }
 
         return spec;
@@ -134,12 +137,12 @@ public class WorksheetService {
     public byte[] downloadPdf(Long versionId, Audience audience, UUID userId) {
         WorksheetVersion version = worksheetVersionRepository
                 .findByIdAndWorksheetOwnerId(versionId, userId)
-                .orElseThrow(() -> new RuntimeException("Versão não encontrada"));
+                .orElseThrow(() -> new WorksheetVersionNotFoundException("Versão não encontrada"));
 
         WorksheetFile file = version.getFiles().stream()
                 .filter(f -> f.getAudience() == audience)
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("PDF não gerado para este público"));
+                .orElseThrow(() -> new PdfGenerationException());
 
         return storageService.load(file.getStorageKey());
     }
@@ -164,7 +167,7 @@ public class WorksheetService {
 
     public void deleteWorksheet(Long worksheetId, UUID userId) {
         Worksheet w = worksheetRepository.findByIdAndOwnerId(worksheetId, userId)
-                .orElseThrow(() -> new RuntimeException("Atividade não encontrada"));
+                .orElseThrow(() -> new WorksheetNotFoundException("Atividade não encontrada"));
         worksheetRepository.delete(w);
     }
 

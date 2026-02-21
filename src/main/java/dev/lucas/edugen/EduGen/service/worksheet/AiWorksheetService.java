@@ -2,6 +2,7 @@ package dev.lucas.edugen.EduGen.service.worksheet;
 
 import dev.lucas.edugen.EduGen.domain.Worksheet;
 import dev.lucas.edugen.EduGen.domain.WorksheetVersion;
+import dev.lucas.edugen.EduGen.eduGenException.infrastructureException.AiSpecGenerationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
@@ -80,11 +81,17 @@ public class AiWorksheetService {
                 worksheet.getQuestionType().name()
         );
 
-        return chatClient.prompt()
-                .system(system)
-                .user(user)
-                .call()
-                .content();
+
+        try {
+            return chatClient.prompt()
+                    .system(system)
+                    .user(user)
+                    .call()
+                    .content();
+
+        } catch (Exception e) {
+            throw new AiSpecGenerationException();
+        }
 
     }
 }
