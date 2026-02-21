@@ -79,7 +79,14 @@ public class UserService {
 
     public UserResponse updateProfile(UUID userId, UpdateProfileRequest request) {
         User user = requireUser(userId);
-        if (request.username() != null) user.setUsername(request.username());
+
+        if (userRepository.existsByUsername(request.username())) {
+            throw new RuntimeException("Esse nome de usuario já está em uso.");
+        }
+        if (request.username() != null && !request.username().isBlank()) {
+            user.setUsername(request.username());
+        }
+
         // TODO: email só com confirmação de senha
         userRepository.save(user);
         return UserMapper.toResponse(user);
