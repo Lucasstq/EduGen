@@ -2,7 +2,7 @@ package dev.lucas.edugen.EduGen.config.cors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -10,22 +10,26 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class CorsConfig {
 
     private static final Logger log = LoggerFactory.getLogger(CorsConfig.class);
 
-    @Value("${cors.allowed-origins:http://localhost:3000,http://localhost:8080}")
-    private String[] allowedOrigins;
+    @Bean
+    @ConfigurationProperties(prefix = "cors")
+    public CorsProperties corsProperties() {
+        return new CorsProperties();
+    }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        log.info("Configuring CORS with allowed origins: {}", Arrays.toString(allowedOrigins));
+    public CorsConfigurationSource corsConfigurationSource(CorsProperties corsProperties) {
+        log.info("Configuring CORS with allowed origins: {}", corsProperties.getAllowedOrigins());
 
         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
-        corsConfiguration.setAllowedOrigins(Arrays.asList(allowedOrigins));
+        corsConfiguration.setAllowedOrigins(corsProperties.getAllowedOrigins());
 
         corsConfiguration.setAllowedMethods(
                 Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
@@ -45,5 +49,16 @@ public class CorsConfig {
         return source;
     }
 
+    public static class CorsProperties {
+        private List<String> allowedOrigins = List.of("http://localhost:3000", "http://localhost:8080");
+
+        public List<String> getAllowedOrigins() {
+            return allowedOrigins;
+        }
+
+        public void setAllowedOrigins(List<String> allowedOrigins) {
+            this.allowedOrigins = allowedOrigins;
+        }
+    }
 
 }
