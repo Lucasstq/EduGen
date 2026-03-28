@@ -15,3 +15,9 @@ cors:
   allowed-origins:
     - ${CORS_ALLOWED_ORIGIN:https://edugen-app.vercel.app}
 
+logging:
+  level:
+    dev.lucas.edugen: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
+

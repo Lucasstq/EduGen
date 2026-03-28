@@ -9,6 +9,8 @@ import dev.lucas.edugen.EduGen.eduGenException.infrastructureException.PdfGenera
 import dev.lucas.edugen.EduGen.eduGenException.resourceNotFoundException.UserNotFoundException;
 import dev.lucas.edugen.EduGen.eduGenException.resourceNotFoundException.WorksheetNotFoundException;
 import dev.lucas.edugen.EduGen.eduGenException.resourceNotFoundException.WorksheetVersionNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -22,8 +24,11 @@ import java.util.List;
 @RestControllerAdvice
 public class RestExceptionHandler {
 
+    private static final Logger log = LoggerFactory.getLogger(RestExceptionHandler.class);
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> genericException(Exception ex) {
+        log.error("Unhandled exception: {}", ex.getMessage(), ex);
         ApiError apiError = ApiError.builder()
                 .timestamp(LocalDateTime.now())
                 .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -39,6 +44,7 @@ public class RestExceptionHandler {
             WorksheetVersionNotFoundException.class
     })
     public ResponseEntity<ApiError> notFoundException(RuntimeException ex) {
+        log.warn("Resource not found: {}", ex.getMessage());
         ApiError apiError = ApiError.builder()
                 .timestamp(LocalDateTime.now())
                 .code(HttpStatus.NOT_FOUND.value())
@@ -53,6 +59,7 @@ public class RestExceptionHandler {
             PdfGenerationException.class
     })
     public ResponseEntity<ApiError> infrastructureException(RuntimeException ex) {
+        log.error("Infrastructure error: {}", ex.getMessage(), ex);
         ApiError apiError = ApiError.builder()
                 .timestamp(LocalDateTime.now())
                 .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -69,6 +76,7 @@ public class RestExceptionHandler {
             UsernameAlreadyExistsException.class
     })
     public ResponseEntity<ApiError> businessException(RuntimeException ex){
+        log.warn("Business rule violation: {}", ex.getMessage());
         ApiError apiError = ApiError.builder()
                 .timestamp(LocalDateTime.now())
                 .code(HttpStatus.CONFLICT.value())
@@ -85,6 +93,8 @@ public class RestExceptionHandler {
                 .stream()
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .toList();
+
+        log.warn("Validation errors: {}", errors);
 
         ApiError apiError = ApiError.builder()
                 .timestamp(LocalDateTime.now())
