@@ -13,5 +13,5 @@ storage:
 
 cors:
   allowed-origins:
-    - ${CORS_ALLOWED_ORIGIN:https://edugen-app.vercel.app/}
+    - ${CORS_ALLOWED_ORIGIN:https://edugen-app.vercel.app}
 
