@@ -1,0 +1,21 @@
+edugen.duckdns.org {
+    reverse_proxy app:8080
+
+    # Compressão para respostas (HTML, CSS, JS)
+    encode gzip
+
+    # Headers de segurança
+    header {
+        X-Content-Type-Options nosniff
+        X-Frame-Options DENY
+        Referrer-Policy strict-origin-when-cross-origin
+        -Server
+    }
+
+    # Logs de acesso
+    log {
+        output stdout
+        format console
+    }
+}
+

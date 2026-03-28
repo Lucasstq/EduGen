@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+
+storage:
+  base-path: /app/pdfs
+
+cors:
+  allowed-origins:
+    - ${CORS_ALLOWED_ORIGIN:https://edugen-app.vercel.app/}
+

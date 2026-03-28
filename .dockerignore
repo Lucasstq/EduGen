@@ -1,0 +1,11 @@
+target/
+pdfs/
+.env
+*.iml
+.idea/
+.git/
+.gitignore
+README.md
+HELP.md
+docker-compose.yml
+
