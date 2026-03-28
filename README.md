@@ -1,105 +1,218 @@
-# EduGen
+<p align="center">
+  <img src="https://img.shields.io/badge/Java-17-orange?style=for-the-badge&logo=openjdk&logoColor=white" />
+  <img src="https://img.shields.io/badge/Spring_Boot-3.5-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" />
+  <img src="https://img.shields.io/badge/Spring_AI-1.1-6DB33F?style=for-the-badge&logo=spring&logoColor=white" />
+  <img src="https://img.shields.io/badge/Gemini_2.5_Flash-4285F4?style=for-the-badge&logo=googlegemini&logoColor=white" />
+  <img src="https://img.shields.io/badge/PostgreSQL-16-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" />
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
+  <img src="https://img.shields.io/badge/Status-Hospedado-brightgreen?style=for-the-badge" />
+</p>
 
-Gerador de atividades escolares que combina Spring Boot, Spring AI e modelos Google Gemini para criar, versionar e distribuir listas de exercícios em PDF para professores e estudantes.
+<h1 align="center">📝 EduGen — Back-end</h1>
 
-## Visão geral
-- **Propósito:** permitir que docentes criem atividades alinhadas ao currículo, com personalização de tema, série, dificuldade e tipo de questão.
-- **Fluxo:** o usuário cadastra a atividade via API segura (JWT), o serviço chama o Gemini para montar o enunciado em JSON, converte para templates Thymeleaf e entrega PDFs distintos para alunos e professores.
-- **Automação:** cada versão é rastreada com seed, status e arquivos persistidos em disco local, possibilitando downloads posteriores.
+<p align="center">
+  <strong>Crie atividades escolares personalizadas com Inteligência Artificial.</strong><br/>
+  API REST que combina Spring Boot, Spring AI e Google Gemini para gerar, versionar e distribuir listas de exercícios em PDF para professores e estudantes.
+</p>
 
-## Principais recursos
-1. **Geração com IA**: prompt ajustado (`AiWorksheetService`) garante JSON consistente com número e tipo de questões definidos.
-2. **Versionamento**: múltiplas versões por atividade com estados `DRAFT`, `GENERATED` e `FAILED`, inclusive filtros por assunto.
-3. **Renderização em PDF**: templates `worksheet_student.html` e `worksheet_teacher.html` (Thymeleaf) combinados ao `openhtmltopdf` para produzir arquivos diferenciados por audiência.
-4. **Armazenamento local**: PDFs físicos ficam em `pdfs/` com chave gerenciada por `StorageService`.
-5. **Autenticação e segurança**: fluxo OAuth2/JWT com chaves `public.pem` e `private.pem`. Endpoints consultam `userId` no token.
-6. **Integração PostgreSQL/Flyway**: persistência relacional e migrações versionáveis (pasta `src/main/resources/db/migration`).
+<p align="center">
+  <a href="https://edugen-app.vercel.app">🌐 Aplicação em Produção</a> ·
+  <a href="#-endpoints-principais">📡 Endpoints</a> ·
+  <a href="#-stack-tecnológica">🛠 Stack</a>
+</p>
 
-## Stack principal
-- Java 17 + Spring Boot 3.5
-- Spring Data JPA, Spring Security, OAuth2 Client
-- Spring AI + Google Gemini 2.5 Flash
-- PostgreSQL 16 (Docker) + Flyway
-- Thymeleaf + OpenHTMLtoPDF
+---
 
-## Pré-requisitos
-- Java 17 SDK
-- Maven Wrapper (`./mvnw`) ou Maven 3.9+
-- Docker + Docker Compose (opcional, para subir PostgreSQL)
-- Conta Google AI Studio (chave Gemini)
+## 🌐 Hospedagem
 
-## Variáveis de ambiente
-| Variável | Descrição |
-| --- | --- |
-| `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD` | Credenciais usadas pelo `docker-compose.yml` e por `spring.datasource` |
-| `GEMINI_API_KEY` | Chave do modelo Gemini usada em `spring.ai.google.genai.api-key` |
-| `JWT_ACCESS_TOKEN_EXPIRATION`, `JWT_REFRESH_TOKEN_EXPIRATION` *(opcionais)* | Sobrescrevem valores padrão definidos em `application.yaml`, se necessário |
+O EduGen está **hospedado e disponível em produção**:
 
-Configure-as em um `.env` compartilhado pelo Docker Compose e/ou exporte no shell antes de iniciar a aplicação.
+| Camada | Tecnologia | URL |
+|--------|-----------|-----|
+| **Front-end** | Next.js / Vercel | [`edugen-app.vercel.app`](https://edugen-app.vercel.app) |
+| **Back-end (API)** | Spring Boot / VPS + Docker | [`edugen.duckdns.org`](https://edugen.duckdns.org) |
+| **Banco de dados** | PostgreSQL 16 | Container Docker na mesma VPS |
+| **Reverse Proxy / HTTPS** | Caddy 2 | Certificado TLS automático via Let's Encrypt |
 
-## Configuração local
-1. **Clonar o repositório**
-   ```bash
-   git clone <url>
-   cd EduGen
-   ```
-2. **Preparar o banco** (opcional, se já houver PostgreSQL configurado)
-   ```bash
-   docker compose up -d
-   ```
-3. **Garanta chaves JWT**: os arquivos `src/main/resources/public.pem` e `private.pem` já existem; substitua-os se precisar de pares distintos.
-4. **Atualize `application.yaml`** se desejar outro diretório para PDFs (`storage.base-path`) ou hosts de CORS.
+---
 
-## Execução
-- **Aplicação Spring Boot**
-  ```bash
-  ./mvnw spring-boot:run
-  ```
-- **Build empacotado**
-  ```bash
-  ./mvnw clean package
-  java -jar target/EduGen-0.0.1-SNAPSHOT.jar
-  ```
-A API inicia, por padrão, em `http://localhost:8080` e se conecta ao banco configurado.
+## 📋 Visão Geral
 
-## Estrutura do projeto
+O **EduGen** permite que docentes criem atividades alinhadas ao currículo, personalizando **tema, série, dificuldade e tipo de questão**. A IA gera o conteúdo, o sistema renderiza PDFs diferenciados (aluno vs. professor) e armazena tudo de forma versionada.
+
+### Fluxo Funcional
+
 ```
-.
-├── docker-compose.yml               # PostgreSQL 16 pronto para uso
-├── pdfs/                            # PDFs gerados (students/teachers)
-├── src/
-│   ├── main/java/dev/lucas/edugen   # Domínio, serviços, controllers
-│   │   ├── controller               # REST (Authentication, User, Worksheet)
-│   │   ├── service/worksheet        # Regras de negócio e integração AI
-│   │   └── service/pdf              # Renderização e armazenamento dos PDFs
-│   └── main/resources
-│       ├── templates                # Modelos Thymeleaf (aluno/professor)
-│       ├── db/migration             # Scripts Flyway
-│       └── application.yaml         # Configuração central
-└── target/                          # Artefatos Maven
+┌──────────────┐     ┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│   Usuário    │────▶│  API (JWT)   │────▶│ Google Gemini│────▶│  PDF Engine  │
+│ autenticado  │     │  REST        │     │  2.5 Flash   │     │  Thymeleaf + │
+│              │◀────│              │◀────│  (Spring AI) │◀────│  OpenHTML    │
+└──────────────┘     └──────────────┘     └──────────────┘     └──────────────┘
+                            │                                         │
+                            ▼                                         ▼
+                     ┌──────────────┐                          ┌──────────────┐
+                     │ PostgreSQL   │                          │  Storage     │
+                     │ + Flyway     │                          │  Local (PDF) │
+                     └──────────────┘                          └──────────────┘
 ```
 
-## Fluxo funcional
 1. Usuário autenticado cria uma `Worksheet` via `POST /api/worksheets`.
 2. Um `WorksheetVersion` é gerado (`POST /api/worksheets/{id}/versions`) e dispara o `AiWorksheetService`.
-3. O JSON retornado é validado, mapeado e persistido; então `PdfService` renderiza duas variantes (aluno/professor) e salva no storage local.
-4. O cliente pode baixar o PDF (`GET /api/worksheets/versions/{versionId}/download?audience=STUDENTS|TEACHERS`) ou consultar o JSON (`GET /api/worksheets/versions/{versionId}/spec`).
+3. O JSON retornado pelo Gemini é validado, mapeado e persistido; então o `PdfService` renderiza duas variantes (aluno/professor) e salva no storage.
+4. O cliente pode baixar o PDF ou consultar o JSON da versão gerada.
 
-## Endpoints essenciais
-| Método | Caminho | Descrição |
-| --- | --- | --- |
-| `POST` | `/api/worksheets` | Cria nova atividade com metadados (assunto, série, quantidade de questões). |
-| `POST` | `/api/worksheets/{id}/versions` | Gera versão baseada no Gemini; permite configurar respostas/explicações. |
-| `GET` | `/api/worksheets` | Lista atividades do usuário com paginação e filtro por disciplina. |
-| `GET` | `/api/worksheets/versions/{versionId}/spec` | Retorna o JSON da versão. |
-| `GET` | `/api/worksheets/versions/{versionId}/download` | Download do PDF filtrando por `Audience`. |
-| `DELETE` | `/api/worksheets/{id}` | Remove atividade pertencente ao usuário. |
+---
 
-Todos os endpoints exigem JWT válido com claim `userId`.
+## 🚀 Principais Recursos
 
-## Testes
-Execute a suíte integrada (JUnit + Spring Boot Test):
+| Recurso | Descrição |
+|---------|-----------|
+| 🤖 **Geração com IA** | Prompt engineering ajustado para JSON consistente com número e tipo de questões definidos pelo professor |
+| 📚 **Versionamento** | Múltiplas versões por atividade com estados `DRAFT`, `GENERATED` e `FAILED` |
+| 📄 **PDFs diferenciados** | Templates Thymeleaf + OpenHTMLtoPDF geram versões distintas para alunos (sem gabarito) e professores (com gabarito e explicações) |
+| 💾 **Armazenamento** | PDFs persistidos em disco com chave gerenciada pelo `StorageService` |
+| 🔐 **Segurança** | OAuth2/JWT com chaves RSA (RS256). Todos os endpoints exigem token válido |
+| 🗄️ **Migrações** | PostgreSQL com Flyway — schema versionado e reproduzível |
+| 📧 **E-mail** | Integração com Spring Mail para notificações |
+| 🐳 **Docker-ready** | Multi-stage build otimizado + Docker Compose com Caddy, App e PostgreSQL |
+
+---
+
+## 🛠 Stack Tecnológica
+
+| Categoria | Tecnologias |
+|-----------|-------------|
+| **Linguagem** | Java 17 |
+| **Framework** | Spring Boot 3.5, Spring Data JPA, Spring Security, Spring AI 1.1 |
+| **IA** | Google Gemini 2.5 Flash (via Spring AI) |
+| **Banco de dados** | PostgreSQL 16 + Flyway |
+| **Geração de PDF** | Thymeleaf + OpenHTMLtoPDF |
+| **Autenticação** | OAuth2 Resource Server + JWT (RS256) |
+| **Infra / Deploy** | Docker, Docker Compose, Caddy 2 (reverse proxy + TLS) |
+| **Build** | Maven Wrapper |
+
+---
+
+## 📁 Estrutura do Projeto
+
+```
+.
+├── Caddyfile                         # Configuração do reverse proxy (HTTPS automático)
+├── Dockerfile                        # Multi-stage build (JDK → JRE)
+├── docker-compose.yml                # Caddy + App + PostgreSQL
+├── pdfs/                             # PDFs gerados (students/teachers)
+├── src/
+│   ├── main/java/dev/lucas/edugen
+│   │   ├── config/                   # Configurações (Security, CORS, JWT)
+│   │   ├── controller/               # REST Controllers (Auth, User, Worksheet)
+│   │   ├── domain/                   # Entidades JPA (Worksheet, Version, Question...)
+│   │   ├── dtos/                     # Data Transfer Objects
+│   │   ├── mapper/                   # Mapeamento entidade ↔ DTO
+│   │   ├── repository/               # Spring Data Repositories
+│   │   ├── service/
+│   │   │   ├── auth/                 # Autenticação e tokens
+│   │   │   ├── pdf/                  # Renderização de PDFs
+│   │   │   ├── storage/              # Persistência de arquivos
+│   │   │   └── worksheet/            # Regras de negócio + integração AI
+│   │   └── eduGenException/          # Exceções customizadas
+│   └── main/resources/
+│       ├── templates/                # Thymeleaf (worksheet_student/teacher)
+│       ├── db/migration/             # Scripts Flyway
+│       ├── application.yaml          # Configuração principal
+│       └── application-prod.yaml     # Configuração de produção
+└── pom.xml
+```
+
+---
+
+## 📡 Endpoints Principais
+
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| `POST` | `/api/worksheets` | Cria nova atividade (assunto, série, nº de questões) |
+| `POST` | `/api/worksheets/{id}/versions` | Gera versão com IA (Gemini) |
+| `GET` | `/api/worksheets` | Lista atividades do usuário (paginação + filtros) |
+| `GET` | `/api/worksheets/versions/{versionId}/spec` | Retorna o JSON da versão gerada |
+| `GET` | `/api/worksheets/versions/{versionId}/download?audience=STUDENTS\|TEACHERS` | Download do PDF |
+| `DELETE` | `/api/worksheets/{id}` | Remove atividade |
+
+> Todos os endpoints exigem JWT válido com claim `userId`.
+
+---
+
+## ⚙️ Variáveis de Ambiente
+
+| Variável | Descrição |
+|----------|-----------|
+| `POSTGRES_DB` | Nome do banco de dados |
+| `POSTGRES_USER` | Usuário do PostgreSQL |
+| `POSTGRES_PASSWORD` | Senha do PostgreSQL |
+| `GEMINI_API_KEY` | Chave da API Google Gemini |
+| `CORS_ALLOWED_ORIGIN` | Origem permitida pelo CORS (ex: `https://edugen-app.vercel.app`) |
+| `SPRING_PROFILES_ACTIVE` | Perfil ativo (`prod` em produção) |
+
+---
+
+## 🐳 Deploy com Docker
+
+```bash
+# Clone o repositório
+git clone <url>
+cd EduGen
+
+# Configure as variáveis de ambiente
+cp .env.example .env
+# Edite o .env com suas credenciais
+
+# Suba tudo (Caddy + App + PostgreSQL)
+docker compose up -d
+```
+
+O Caddy configura automaticamente o certificado HTTPS via Let's Encrypt.
+
+---
+
+## 💻 Desenvolvimento Local
+
+```bash
+# 1. Suba apenas o banco
+docker compose up -d postgres
+
+# 2. Execute a aplicação
+./mvnw spring-boot:run
+```
+
+A API estará disponível em `http://localhost:8080`.
+
+---
+
+## 🧪 Testes
+
 ```bash
 ./mvnw test
 ```
+
+---
+
+## ⚠️ Aviso
+
+> Este repositório é público **exclusivamente para fins de portfólio**. O código-fonte está disponível para visualização e referência, mas **não é permitido**:
+>
+> - Clonar, copiar ou redistribuir este projeto (total ou parcialmente).
+> - Utilizar o código como base para outros projetos.
+> - Realizar forks com intenção de uso, modificação ou distribuição.
+>
+> Caso tenha interesse em discutir o projeto ou colaborar, entre em contato diretamente.
+
+---
+
+## 📜 Licença
+
+**All Rights Reserved** — Todos os direitos reservados. Este projeto não possui licença open-source. A disponibilização pública do código não concede qualquer permissão de uso, cópia, modificação ou distribuição.
+
+---
+
+<p align="center">
+  Desenvolvido por <strong>Lucas Emanuel</strong>
+</p>
 
