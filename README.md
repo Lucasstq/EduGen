@@ -29,7 +29,7 @@ O EduGen está **hospedado e disponível em produção**:
 
 | Camada | Tecnologia | URL |
 |--------|-----------|-----|
-| **Front-end** | Next.js / Vercel | [`edugen-app.vercel.app`](https://edugen-app.vercel.app) |
+| **Front-end** | React/Vite / Vercel | [`edugen-app.vercel.app`](https://edugen-app.vercel.app) |
 | **Back-end (API)** | Spring Boot / VPS + Docker | [`edugen.duckdns.org`](https://edugen.duckdns.org) |
 | **Banco de dados** | PostgreSQL 16 | Container Docker na mesma VPS |
 | **Reverse Proxy / HTTPS** | Caddy 2 | Certificado TLS automático via Let's Encrypt |
