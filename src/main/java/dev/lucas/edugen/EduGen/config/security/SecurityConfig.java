@@ -45,6 +45,7 @@ public class SecurityConfig {
                         authorize
                                 .requestMatchers(
                                         "/api/auth/register", "/api/auth/login",
+                                        "/api/auth/verify-email",
                                         "/api/auth/refresh").permitAll()
                                 .anyRequest().authenticated()
                 )

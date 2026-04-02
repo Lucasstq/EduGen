@@ -8,6 +8,7 @@ import dev.lucas.edugen.EduGen.eduGenException.businessExeception.PasswordMismat
 import dev.lucas.edugen.EduGen.eduGenException.businessExeception.UsernameAlreadyExistsException;
 import dev.lucas.edugen.EduGen.mapper.UserMapper;
 import dev.lucas.edugen.EduGen.repository.UserRepository;
+import dev.lucas.edugen.EduGen.service.mail.EmailVerificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +20,7 @@ public class RegisterUserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailVerificationService emailVerificationService;
 
     public UserResponse execute(RegisterUserRequest request) {
 
@@ -26,10 +28,14 @@ public class RegisterUserService {
 
         User newUser = UserMapper.toEntity(request);
         newUser.setHashPassword(passwordEncoder.encode(request.password()));
-        newUser.setActive(true);
+        newUser.setActive(false);
 
         try {
             User savedUser = userRepository.save(newUser);
+
+            // Envio de email de verificação
+            emailVerificationService.sendVerificationEmail(savedUser);
+
             return UserMapper.toResponse(savedUser);
         } catch (DataIntegrityViolationException e) {
             throw new IllegalArgumentException("Dados de usuário inválidos ou já existentes");
