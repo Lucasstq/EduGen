@@ -2,6 +2,25 @@ spring:
   datasource:
     url: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
 
+  app:
+    frontend-url: ${FRONTEND_URL:https://edugen-app.vercel.app}
+    api-url: ${API_URL:https://edugen.duckdns.org}
+
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            trust: ${MAIL_HOST:smtp.gmail.com}
+
   jpa:
     show-sql: false
     properties:
