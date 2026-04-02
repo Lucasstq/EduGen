@@ -25,6 +25,10 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       GEMINI_API_KEY: ${GEMINI_API_KEY}
       CORS_ALLOWED_ORIGIN: ${CORS_ALLOWED_ORIGIN}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      API_URL: https://edugen.duckdns.org
+      FRONTEND_URL: https://edugen-app.vercel.app
     volumes:
       - ./pdfs:/app/pdfs
     depends_on:
