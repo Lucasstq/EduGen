@@ -2,6 +2,7 @@ package dev.lucas.edugen.EduGen.config.exceptions;
 
 import dev.lucas.edugen.EduGen.dtos.apiError.ApiError;
 import dev.lucas.edugen.EduGen.eduGenException.businessExeception.EmailAlreadyExistsException;
+import dev.lucas.edugen.EduGen.eduGenException.businessExeception.EmailTokenInvalidException;
 import dev.lucas.edugen.EduGen.eduGenException.businessExeception.PasswordMismatchException;
 import dev.lucas.edugen.EduGen.eduGenException.businessExeception.UsernameAlreadyExistsException;
 import dev.lucas.edugen.EduGen.eduGenException.infrastructureException.AiSpecGenerationException;
@@ -73,7 +74,8 @@ public class RestExceptionHandler {
             EmailAlreadyExistsException.class,
             InvalidClassException.class,
             PasswordMismatchException.class,
-            UsernameAlreadyExistsException.class
+            UsernameAlreadyExistsException.class,
+            EmailTokenInvalidException.class
     })
     public ResponseEntity<ApiError> businessException(RuntimeException ex){
         log.warn("Business rule violation: {}", ex.getMessage());
