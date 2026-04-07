@@ -1,10 +1,7 @@
 package dev.lucas.edugen.EduGen.config.exceptions;
 
 import dev.lucas.edugen.EduGen.dtos.apiError.ApiError;
-import dev.lucas.edugen.EduGen.eduGenException.businessExeception.EmailAlreadyExistsException;
-import dev.lucas.edugen.EduGen.eduGenException.businessExeception.EmailTokenInvalidException;
-import dev.lucas.edugen.EduGen.eduGenException.businessExeception.PasswordMismatchException;
-import dev.lucas.edugen.EduGen.eduGenException.businessExeception.UsernameAlreadyExistsException;
+import dev.lucas.edugen.EduGen.eduGenException.businessExeception.*;
 import dev.lucas.edugen.EduGen.eduGenException.infrastructureException.AiSpecGenerationException;
 import dev.lucas.edugen.EduGen.eduGenException.infrastructureException.PdfGenerationException;
 import dev.lucas.edugen.EduGen.eduGenException.resourceNotFoundException.UserNotFoundException;
@@ -72,6 +69,8 @@ public class RestExceptionHandler {
 
     @ExceptionHandler({
             EmailAlreadyExistsException.class,
+            EmailException.class,
+            PasswordMustDifferentException.class,
             InvalidClassException.class,
             PasswordMismatchException.class,
             UsernameAlreadyExistsException.class,
