@@ -21,6 +21,9 @@ public class EmailService {
     @Value("${spring.app.api-url}")
     private String baseUrl;
 
+    @Value("${spring.app.frontend-url}")
+    private String frontendUrl;
+
     @Async
     public void sendMail(String toEmail, String username, String token) {
         try {
@@ -36,6 +39,43 @@ public class EmailService {
             log.error("Erro ao enviar email de verificação para: {}", toEmail, e);
             throw new RuntimeException("Erro ao enviar email de verificação", e);
         }
+    }
+
+    @Async
+    public void sendPasswordResetEmail(String toEmail, String username, String token) {
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("Edugen");
+            message.setTo(toEmail);
+            message.setSubject("Redefinição de senha solicitada 🔐");
+            message.setText(buildPasswordResetEmailBody(username, token));
+
+            mailSender.send(message);
+            log.info("Email de redefinição de senha enviado para: {}", toEmail);
+        } catch (Exception e) {
+            log.error("Erro ao enviar email de redefinição de senha para: {}", toEmail, e);
+            throw new RuntimeException("Erro ao enviar email de redefinição de senha", e);
+        }
+    }
+
+    private String buildPasswordResetEmailBody(String username, String token) {
+        String resetUrl = frontendUrl + "/reset-password?token=" + token;
+
+        return String.format(
+                """
+                        Olá, %s! 👋
+                        
+                        Recebemos uma solicitação para redefinir sua senha. Para garantir a segurança da sua conta, 
+                        por favor, clique no link abaixo para criar uma nova senha. O link é válido por 2 horas.
+                        
+                        %s
+                        
+                        Caso não tenha sido você, ignore esta mensagem.
+                        
+                        Atenciosamente,
+                        Suporte EduGen
+                        
+                        """, username, resetUrl);
     }
 
     private String buildVerificationEmailBody(String username, String token) {

@@ -3,9 +3,7 @@ package dev.lucas.edugen.EduGen.service.mail;
 import dev.lucas.edugen.EduGen.domain.PasswordResetToken;
 import dev.lucas.edugen.EduGen.domain.User;
 import dev.lucas.edugen.EduGen.dtos.request.UserForgetPasswordRequest;
-import dev.lucas.edugen.EduGen.eduGenException.businessExeception.EmailException;
 import dev.lucas.edugen.EduGen.eduGenException.businessExeception.EmailTokenInvalidException;
-import dev.lucas.edugen.EduGen.eduGenException.resourceNotFoundException.UserNotFoundException;
 import dev.lucas.edugen.EduGen.repository.PasswordResetTokenRepository;
 import dev.lucas.edugen.EduGen.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -19,7 +17,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class EmailVerificationService {
+public class AuthMailService {
 
     private final EmailService emailService;
     private final UserRepository userRepository;
