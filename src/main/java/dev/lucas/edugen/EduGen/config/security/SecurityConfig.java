@@ -45,8 +45,8 @@ public class SecurityConfig {
                         authorize
                                 .requestMatchers(
                                         "/api/auth/register", "/api/auth/login",
-                                        "/api/auth/verify-email",
-                                        "/api/auth/refresh").permitAll()
+                                        "/api/auth/verify-email", "/api/auth/forgot-password",
+                                        "/api/auth/reset-password", "/api/auth/refresh").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
