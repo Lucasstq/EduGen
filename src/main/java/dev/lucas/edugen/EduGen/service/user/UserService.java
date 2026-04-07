@@ -1,4 +1,4 @@
-package dev.lucas.edugen.EduGen.service;
+package dev.lucas.edugen.EduGen.service.user;
 
 import dev.lucas.edugen.EduGen.domain.User;
 import dev.lucas.edugen.EduGen.domain.Worksheet;

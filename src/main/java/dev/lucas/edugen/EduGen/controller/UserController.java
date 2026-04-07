@@ -6,7 +6,7 @@ import dev.lucas.edugen.EduGen.dtos.response.user.UserActivityResponse;
 import dev.lucas.edugen.EduGen.dtos.response.user.UserDashBoardResponse;
 import dev.lucas.edugen.EduGen.dtos.response.user.UserResponse;
 import dev.lucas.edugen.EduGen.domain.enums.Subject;
-import dev.lucas.edugen.EduGen.service.UserService;
+import dev.lucas.edugen.EduGen.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
