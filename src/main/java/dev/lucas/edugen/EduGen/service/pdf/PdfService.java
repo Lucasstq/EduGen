@@ -23,7 +23,7 @@ public class PdfService {
 
     public void renderAndStore(WorksheetVersion version){
         renderFor(version, Audience.STUDENTS, "worksheet_student", false, false);
-        renderFor(version, Audience.TEACHERS, "worksheet_teacher", version.isIncludeAnswers(), version.isIncludeExplanations());
+        renderFor(version, Audience.TEACHERS, "worksheet_teacher", true, true);
 
         version.setStatus(VersionStatus.RENDERED);
     }

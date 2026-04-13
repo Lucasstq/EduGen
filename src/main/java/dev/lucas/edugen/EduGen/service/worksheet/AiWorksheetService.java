@@ -30,8 +30,8 @@ public class AiWorksheetService {
                 - topic: %s
                 - difficulty: %s
                 - seed: %d
-                - includeAnswers: %s
-                - includeExplanations: %s
+                - includeAnswers: true
+                - includeExplanations: true
                 - description: %s
                 
                 O JSON deve ter este formato:
@@ -43,8 +43,8 @@ public class AiWorksheetService {
                       "type": "MCQ" | "OPEN" | "TRUE_FALSE" | "FILL_BLANK",
                       "statement": "texto",
                       "options": [{"label":"A"|"B"|"C"|"D","text":"texto"}],   // somente quando type="MCQ"
-                      "correctAnswer": "A"|"B"|"C"|"D" ou "texto",             // somente se includeAnswers=true
-                      "explanation": "texto"                                   // somente se includeExplanations=true
+                      "correctAnswer": "A"|"B"|"C"|"D" ou "texto",
+                      "explanation": "texto"
                     }
                   ]
                 }
@@ -53,12 +53,11 @@ public class AiWorksheetService {
                 - "description" deve ser um texto introdutório e não pode conter HTML ou quebras de linha desnecessárias; use "" quando nenhuma descrição for necessária.
                 - "questions" deve ter exatamente %d itens.
                 - orderNumber sequencial começando em 1.
-                - Se type=MCQ: options deve ter 4 itens (A,B,C,D) e correctAnswer deve ser "A"|"B"|"C"|"D" (quando includeAnswers=true).
-                - Se type=TRUE_FALSE: correctAnswer deve ser "TRUE" ou "FALSE" (quando includeAnswers=true).
-                - Se type=FILL_BLANK: correctAnswer é o texto esperado (quando includeAnswers=true).
-                - Se type=VARIABLE: as questões devem ser geradas com varios tipos de perguntas (MCQ, OPEN, TRUE_FALSE, FILL_BLANK) e o campo correctAnswer deve seguir as regras do tipo específico da questão (quando includeAnswers=true).
-                - Se includeAnswers=false, NÃO inclua o campo correctAnswer.
-                - Se includeExplanations=false, NÃO inclua o campo explanation.
+                - Se type=MCQ: options deve ter 4 itens (A,B,C,D) e correctAnswer deve ser "A"|"B"|"C"|"D".
+                - Se type=TRUE_FALSE: correctAnswer deve ser "TRUE" ou "FALSE".
+                - Se type=FILL_BLANK: correctAnswer é o texto esperado.
+                - Se type=VARIABLE: as questões devem ser geradas com varios tipos de perguntas (MCQ, OPEN, TRUE_FALSE, FILL_BLANK) e o campo correctAnswer deve seguir as regras do tipo específico da questão.
+                - Sempre inclua correctAnswer e explanation em todas as questões.
                 - Não invente campos além dos listados.
                 - NUNCA gere questões que façam referência a figuras, imagens, gráficos, tabelas ou qualquer elemento visual ("observe a figura", "veja o gráfico", "na imagem abaixo", etc). O sistema não suporta imagens nas questões. Todas as questões devem ser autocontidas em texto.
                 - Todas as questões devem ser do tipo: %s
@@ -73,8 +72,6 @@ public class AiWorksheetService {
                 worksheet.getTopic(),
                 worksheet.getDifficulty().name(),
                 version.getSeed(),
-                version.isIncludeAnswers(),
-                version.isIncludeExplanations(),
                 worksheet.getDescription(),
                 worksheet.getQuestionCount(),
                 worksheet.getQuestionCount(),
