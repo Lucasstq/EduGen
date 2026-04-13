@@ -40,6 +40,7 @@ public class User {
     @Column(name = "email_verification_token_expires_at")
     private LocalDateTime emailVerificationTokenExpiresAt;
 
+    @Builder.Default
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Worksheet> worksheets = new ArrayList<>();
 
